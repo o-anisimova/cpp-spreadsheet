@@ -26,6 +26,12 @@ struct Position {
     static const Position NONE;
 };
 
+struct PositionHasher {
+    size_t operator()(Position pos) const {
+        return pos.col + pos.row * 27;
+    }
+};
+
 struct Size {
     int rows = 0;
     int cols = 0;
@@ -42,13 +48,31 @@ public:
         Div0,  // в результате вычисления возникло деление на ноль
     };
 
-    FormulaError(Category category);
+    FormulaError(Category category) {
+        category_ = category;
+    }
 
-    Category GetCategory() const;
+    Category GetCategory() const {
+        return category_;
+    }
 
-    bool operator==(FormulaError rhs) const;
+    bool operator==(FormulaError rhs) const {
+        return category_ == rhs.category_;
+    }
 
-    std::string_view ToString() const;
+    std::string_view ToString() const {
+        using namespace std::string_view_literals;
+        switch (category_) {
+        case Category::Ref:
+            return "Incorrect position"sv;
+        case Category::Value:
+            return "Cell cannot be treated as a number"sv;
+        case Category::Div0:
+            return "Division by 0"sv;
+        default:
+            return "Unknown category"sv;
+        }
+    }
 
 private:
     Category category_;
@@ -143,6 +167,8 @@ public:
     // соответственно. Пустая ячейка представляется пустой строкой в любом случае.
     virtual void PrintValues(std::ostream& output) const = 0;
     virtual void PrintTexts(std::ostream& output) const = 0;
+
+    virtual bool IsPosInSheet(Position pos) const = 0;
 };
 
 // Создаёт готовую к работе пустую таблицу.
