@@ -3,7 +3,7 @@
 #include "cell.h"
 #include "common.h"
 
-#include <functional>
+#include <unordered_set>
 
 class Sheet : public SheetInterface {
 public:

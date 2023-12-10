@@ -3,8 +3,6 @@
 #include "common.h"
 #include "formula.h"
 
-#include <unordered_set>
-#include <optional>
 
 class Sheet;
 

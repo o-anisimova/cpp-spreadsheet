@@ -4,9 +4,7 @@
 #include "common.h"
 
 #include <algorithm>
-#include <functional>
 #include <iostream>
-#include <optional>
 
 using namespace std::literals;
 

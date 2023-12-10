@@ -3,7 +3,6 @@
 #include <cassert>
 #include <iostream>
 #include <string>
-#include <optional>
 
 class Cell::Impl {
 public:
